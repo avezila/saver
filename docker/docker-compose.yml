@@ -1,0 +1,17 @@
+version : '2'
+
+services:
+  go:
+    image : pioh/saver-go
+    ports:
+      - "5353:5353"
+    depends_on:
+      - mongo
+    links:
+      - mongo
+  mongo:
+    image: pioh/saver-mongo
+    volumes:
+      - ../data/mongo:/data/db
+      - ../mongo/:/setup
+

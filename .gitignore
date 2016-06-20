@@ -1,0 +1,6 @@
+build
+data
+**/*.pb.go
+**/node_module
+**/*.swp
+**/*.swo

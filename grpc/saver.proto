@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package saver;
+
+service Saver {
+  rpc GetById(RawQuery) returns (Raw) {}
+  rpc Save(Raw) returns (Empty) {}
+}
+
+message Empty {
+}
+
+message Raw {
+  string id = 1;
+  bytes  data = 2;
+}
+
+message RawQuery {
+  string id = 1;
+}
