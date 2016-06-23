@@ -2,6 +2,6 @@ build
 data
 **/*.pb.go
 services/*/grpc
-**/node_module
+services/*/node_modules
 **/*.swp
 **/*.swo

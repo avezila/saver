@@ -86,3 +86,13 @@ CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o ../$output .
 
 cd "$ROOT"
 rm -rf build/$output.pkg
+
+rm -rf build/app
+mkdir -p build/app
+cp build/$output build/app/app
+cp deploy/go/Dockerfile build/app
+cd build/app
+docker build --no-cache -t $imagename .
+
+cd "$ROOT"
+rm -rf build/app build/$output

@@ -15,3 +15,13 @@ services:
     image: avezila/saver-mongo
     volumes:
       - ../data/saver-mongo:/data/db
+  saver-client:
+    image: avezila/saver-client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - saver
+    links:
+      - saver
+    volumes:
+      - ../data/saver-client:/usr/src/app/data
