@@ -1,0 +1,17 @@
+version : '2'
+
+services:
+  saver:
+    image : avezila/saver
+    ports:
+      - "5353:5353"
+    depends_on:
+      - saver-mongo
+    links:
+      - saver-mongo
+    volumes:
+      - ../data/saver:/data
+  saver-mongo:
+    image: avezila/saver-mongo
+    volumes:
+      - ../data/saver-mongo:/data/db

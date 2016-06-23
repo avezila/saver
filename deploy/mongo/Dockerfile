@@ -1,6 +1,6 @@
-FROM       mongo:latest
+FROM       mongo
 
-COPY ./mongo /setup
+ADD ./mongo /setup
 
 ENTRYPOINT ["/setup/entrypoint.sh"]
 
