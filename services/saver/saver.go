@@ -8,7 +8,7 @@ import (
 )
 
 type Saver struct {
-	collection *mgo.Collection
+	db *mgo.Collection
 }
 
 func New(server *grpc.Server) (*Saver, error) {
@@ -18,17 +18,27 @@ func New(server *grpc.Server) (*Saver, error) {
 	}
 
 	saver := &Saver{
-		collection: session.DB("saver").C("bytes"),
+		db: session.DB("saver").C("bytes"),
 	}
 	RegisterSaverServer(server, saver)
 	return saver, nil
 }
 
-func (s *Saver) Save(ctx context.Context, raw *Raw) (*Empty, error) {
-	_, err := s.collection.Upsert(bson.M{"id": raw.Id}, raw)
-	return nil, err
+func (s *Saver) FilterRows(ctx context.Context, req *FilterRowsReq) (res *FilterRowsRes, err error) {
+	res = &FilterRowsRes{}
+	f := s.db.Find(bson.M{"id": bson.M{"$regex": "^" + req.Id + ".*"}})
+	n, err := f.Count()
+
+	res.Max = int32(n)
+	err = f.Skip(int(req.From)).Limit(int(req.Count)).All(&res.Rows)
+
+	return res, err
 }
 
-func (s *Saver) GetById(context.Context, *RawQuery) (*Raw, error) {
-	return nil, nil
+func (s *Saver) PushRow(ctx context.Context, req *PushRowReq) (*PushRowRes, error) {
+	res := &PushRowRes{}
+
+	_, err := s.db.Upsert(bson.M{"id": req.Row.Id}, bson.M{"$set": req.Row})
+
+	return res, err
 }

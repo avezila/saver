@@ -11,6 +11,16 @@ services:
       - saver-mongo
     volumes:
       - ../data/saver:/data
+  proxy:
+    image : avezila/saver-proxy
+    ports:
+      - "5354:5354"
+    depends_on:
+      - saver
+    links:
+      - saver
+    volumes:
+      - ../data/proxy:/data
   saver-mongo:
     image: avezila/saver-mongo
     volumes:
@@ -21,7 +31,9 @@ services:
       - "3000:3000"
     depends_on:
       - saver
+      - proxy
     links:
       - saver
+      - proxy
     volumes:
       - ../data/saver-client:/usr/src/app/data

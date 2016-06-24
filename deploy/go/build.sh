@@ -15,24 +15,24 @@ output=`echo $output | tr ":" _`
 services=${@: 1 : $#-1}
 allservices=$( ls -1 services)
 
-protoReg='^\.\/(.*)\.proto$'
+protoReg='(.*)\.proto$'
 
 
-rm -rf `find . | grep "\.pb\.go$"`
 
 for service in $services; do
+  rm -rf `find services/$service | grep "\.pb\.go$"`
   for other in $allservices; do
     cd "$ROOT"/services/$other
-    for protof in $( find . | grep .proto$ ); do
+    for protof in $( ls -1 | grep .proto$ ); do
       if [[ $protof =~ $protoReg ]]; then
         #echo "service $other from $service proto: ${BASH_REMATCH[1]}"
         if [[ $other = $service ]]; then
-          out=`dirname $protof`
+          out=`dirname ./$protof`
         else
-          out="$ROOT"/services/$service/grpc/$other/`dirname $protof`
+          out="$ROOT"/services/$service/grpc/$other/`dirname ./$protof`
         fi
         mkdir -p $out
-        protoc --go_out=plugins=grpc:$out $protof
+        protoc --go_out=plugins=grpc:$out ./$protof
       fi
     done
   done

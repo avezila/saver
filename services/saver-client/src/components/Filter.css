@@ -1,0 +1,60 @@
+:local(.filter) {
+  border-radius: 0;
+  border-color: #ABAAAA;
+  border-left: 0;
+  border-right: 0;
+  width : 300px;
+  float : left;
+  display: inline-block;
+}
+
+:local(.pushBlock),:local(.filterBlock) {
+  color : white;
+  font-weight: bold;
+  width : 100%;
+  float : left;
+  display: inline-block;
+  margin : 5px 5px;
+}
+:local(.pushBlock) > * {
+  height : 30px;
+  line-height: 30px;
+  padding : 0 5px;
+  float : left;
+  display: inline-block;
+}
+:local(.pushBlock) > input {
+  width : 100px;
+}
+:local(.pushBlock) > button {
+  padding : 0 10px;
+  margin : 0 10px;
+}
+:local(.pushBlock) > button > i {
+  padding : 0 5px;
+}
+:local(.filterActions) {
+  float : left;
+  display: inline;
+  flex: 0 0 90px;
+}
+
+:local(.btnAction), :local(.btnAction):active, :local(.btnAction):focus, :local(.btnAction):hover {
+  float : left;
+  display: inline-block;
+  margin-right: 5px;
+  color: #5C75B0;
+  flex: 0 0 90px;
+}
+
+:local(.counter){
+  float : left;
+  display: inline-block;
+  margin-right: 5px;
+  color: white;
+  font-size: 20px;
+  flex: 0 0 90px;
+}
+button:focus {
+  outline: 0 !important;
+}

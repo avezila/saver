@@ -15,15 +15,15 @@ output=`echo $output | tr ":" _`
 services=${@: 1 : $#-1}
 allservices=$( ls -1 services)
 
-protoReg='^\.\/(.*)\.proto$'
+protoReg='^(.*)\.proto$'
 
 
-rm -rf `find . | grep "\.pb\.go$"`
+rm -rf `find . | grep "\.pb.js$"`
 
 for service in $services; do
   for other in $allservices; do
     cd "$ROOT"/services/$other
-    for protof in $( find . | grep .proto$ ); do
+    for protof in $( ls -1 | grep .proto$ ); do
       if [[ $protof =~ $protoReg ]]; then
         #echo "service $other from $service proto: ${BASH_REMATCH[1]}"
         #if [[ $other = $service ]]; then
@@ -31,8 +31,9 @@ for service in $services; do
         #else
         out="$ROOT"/services/$service/grpc/$other/${BASH_REMATCH[1]}.pb #`dirname $protof`
         #fi
-        mkdir -p `dirname $out`
-        cp $protof $out
+        mkdir -p `dirname ./$out`
+        pbjs $protof -t commonjs > $out.js
+        #cp $protof $out
         #protoc --go_out=plugins=grpc:$out $protof
       fi
     done
